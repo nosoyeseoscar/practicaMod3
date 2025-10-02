@@ -14,7 +14,7 @@ cursor = conexion.cursor()
 
 
 #Creamos una consulta
-cursor.execute("SELECT * FROM usuarios")
+cursor.execute("SELECT * FROM usuarios;")
 #sacamos todo
 registros = cursor.fetchall()
 

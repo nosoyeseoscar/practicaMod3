@@ -28,6 +28,7 @@ def obtener_datos_usuario(username, password):
     #Consulta la base de datos para obtener los datos de un usuario a partir de sus credenciales.
     conn = conectar_db()
     if not conn:
+        print("No se pudo conectar a la base de datos.")
         return
     try:
         cursor = conn.cursor()
@@ -50,6 +51,7 @@ def obtener_datos_usuario(username, password):
             print(f"Fecha de Nacimiento: {usuario[4]}")
         else:
             print("\nUsuario o contraseña incorrectos.")
+            # Cerrar la conexión
             cursor.close()
             conn.close()
     except Exception as e:

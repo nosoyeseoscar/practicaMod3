@@ -21,7 +21,7 @@ VALUES
 ('Daniela Flores', 'daniela.flores18@example.com', '1234567807', '1996-03-01'),
 ('Héctor Serrano', 'hector.serrano19@example.com', '1234567808', '1982-02-11'),
 ('Patricia Vega', 'patricia.vega20@example.com', '1234567809', '1990-09-05');
-Insertar datos en la tabla credenciales
+-- Insertar datos en la tabla credenciales
 INSERT INTO credenciales (id_usuario, username, password_hash)
 VALUES
 (1, 'juan.perez1', 'hash_juan_perez'),
