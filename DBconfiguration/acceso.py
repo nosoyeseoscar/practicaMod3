@@ -215,7 +215,10 @@ if __name__ == "__main__":
             print("\nBorrar usuario:")
             try:
                 id_usuario = int(input("Ingrese el ID del usuario a borrar: "))
-                borrar_usuario(id_usuario)
+                #TODO: pedir confirmación.
+                confirmacion = input("¿Está seguro de que desea borrar el usuario? (s/n): ")
+                if confirmacion.lower() == 's':
+                    borrar_usuario(id_usuario)
             except ValueError:
                 print("ID inválido. Debe ser un número entero.")
         elif opcion == '5':
