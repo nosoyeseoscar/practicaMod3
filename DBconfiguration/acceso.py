@@ -129,12 +129,46 @@ def actualizar_correo(id_usuario, nuevo_correo):
         if conn:
             conn.close()
 
+def borrar_usuario(id_usuario):
+    #Borra un usuario de la base de datos a partir de su ID.
+    conn = conectar_db()
+    if not conn:
+        print("No se pudo conectar a la base de datos.")
+        return
+    try:
+        cursor = conn.cursor()
+        # Primero borrar las credenciales asociadas al usuario.
+        borrar_credenciales_query = """
+        DELETE FROM credenciales
+        WHERE id_usuario = %s;
+        """
+        cursor.execute(borrar_credenciales_query, (id_usuario,))
+        
+        # Luego borrar el usuario.
+        borrar_usuario_query = """
+        DELETE FROM usuarios
+        WHERE id_usuario = %s;
+        """
+        cursor.execute(borrar_usuario_query, (id_usuario,))
+        
+        conn.commit()
+        print("\nUsuario borrado correctamente.")
+    except Exception as e:
+        print("Error al borrar el usuario:", e)
+        conn.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 def menu_inicial():
     print("\nSeleccione una opción:")
     print("1. Iniciar sesión")
     print("2. Insertar nuevo usuario")
     print("3. Actualizar correo de usuario")
-    print("4. Salir")
+    print("4. Borrar usuario.")
+    print("5. Salir")
     opcion = input("Ingrese el número de la opción deseada: ")
     return opcion
 
@@ -149,6 +183,7 @@ if __name__ == "__main__":
     #obtener_datos_usuario(user, pwd)
     #TODO: Implementar insertar usuario mediante una función.
     #TODO: actualizar correo.
+    #TODO: borrar usuario.
     while True:
         opcion = menu_inicial()
         if opcion == '1':
@@ -176,6 +211,14 @@ if __name__ == "__main__":
             except ValueError:
                 print("ID inválido. Debe ser un número entero.")
         elif opcion == '4':
+            #opción cuatro, borrar usuario.
+            print("\nBorrar usuario:")
+            try:
+                id_usuario = int(input("Ingrese el ID del usuario a borrar: "))
+                borrar_usuario(id_usuario)
+            except ValueError:
+                print("ID inválido. Debe ser un número entero.")
+        elif opcion == '5':
             #bye bye
             print("Saliendo del programa.")
             break
