@@ -81,12 +81,12 @@ def insertar_usaurio(nombre, correo, telefono, fecha_nacimiento, usuario, passwo
 
         # Query externa para insertar en la tabla credenciales.
         insertar_credenciales = """
-        INSERT INTO credenciales (id_usuario, usuario, password)
-        VALUES (%s, %s, %s);
+        INSERT INTO credenciales (id_usuario, password)
+        VALUES (%s, %s);
         """
 
-        #pasamos el id del usuario recien creado, el usuario y la contraseña.
-        cursor.execute(insertar_credenciales, (id_usuario, usuario, password))
+        #pasamos el id del usuario recien creado y la contraseña.
+        cursor.execute(insertar_credenciales, (id_usuario, password))
 
         # Confirmar los cambios
         conn.commit()
