@@ -57,6 +57,78 @@ def obtener_datos_usuario(username, password):
     except Exception as e:
         print("Error al consultar la base de datos:", e)
 
+#función de insersión de usuario.
+def insertar_usaurio(nombre, correo, telefono, fecha_nacimiento, usuario, password):
+    #Inserta un nuevo usuario en la base de datos.
+    conn = conectar_db()
+    if not conn:
+        print("No se pudo conectar a la base de datos.")
+        return #terminarnos la función si no hay conexión.
+    
+    #manejamos la excepción en caso de error.
+    try:
+        cursor = conn.cursor() #inicializamos el cursor.
+
+        # Crear una nueva entrada en la tabla usuarios mediante una query externa ya que se me hace más sencillo modificar así en caso de que me equivoque.
+        insertar_usuario = """
+        INSERT INTO usuarios (nombre, correo, telefono, fecha_nacimiento)
+        VALUES (%s, %s, %s, %s) RETURNING id_usuario;
+        """
+        cursor.execute(insertar_usuario, (nombre, correo, telefono, fecha_nacimiento))
+        id_usuario = cursor.fetchone()[0] # Obtener el id_usuario generado, primer elemento de la tupla.
+
+        # Insertar en la tabla credenciales
+
+        # Query externa para insertar en la tabla credenciales.
+        insertar_credenciales = """
+        INSERT INTO credenciales (id_usuario, usuario, password)
+        VALUES (%s, %s, %s);
+        """
+
+        #pasamos el id del usuario recien creado, el usuario y la contraseña.
+        cursor.execute(insertar_credenciales, (id_usuario, usuario, password))
+
+        # Confirmar los cambios
+        conn.commit()
+        print("\nUsuario insertado correctamente :)")
+
+    except Exception as e:
+        print("Error al insertar en la base de datos:", e)
+        #deshacemos lo que hicimos
+        conn.rollback()
+    finally:
+        #cerramos todo si no está hecho ya.
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+        
+def actualizar_correo(id_usuario, nuevo_correo):
+    #Actualiza el correo de un usuario solicitnado ID.
+    conn = conectar_db()
+    if not conn:
+        print("No se pudo conectar a la base de datos.")
+        return
+    try:
+        cursor = conn.cursor()
+        # Query para actualizar el correo del usuario, gusto personal ponerla afuera.
+        actualizar_query = """
+        UPDATE usuarios
+        SET correo = %s
+        WHERE id_usuario = %s;
+        """
+        cursor.execute(actualizar_query, (nuevo_correo, id_usuario))
+        conn.commit()
+        print("\nCorreo actualizado correctamente.")
+    except Exception as e:
+        print("Error al actualizar el correo:", e)
+        conn.rollback()
+    finally:
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
+
 if __name__ == "__main__":
     print("Inicio de sesión en la base de datos")
     # Solicitar credenciales al usuario
@@ -64,3 +136,6 @@ if __name__ == "__main__":
     pwd = getpass.getpass("Ingrese su contraseña: ")#No muestra la contraseña a escribir
     #Consultar base de datos
     obtener_datos_usuario(user, pwd)
+
+    #TODO: Implementar insertar usuario mediante una función.
+    #TODO: actualizar correo.
