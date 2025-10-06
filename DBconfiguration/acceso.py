@@ -130,7 +130,7 @@ def actualizar_correo(id_usuario, nuevo_correo):
             conn.close()
 
 def menu_inicial():
-    print("Seleccione una opción:")
+    print("\nSeleccione una opción:")
     print("1. Iniciar sesión")
     print("2. Insertar nuevo usuario")
     print("3. Actualizar correo de usuario")
