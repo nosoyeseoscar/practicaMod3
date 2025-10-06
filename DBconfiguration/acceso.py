@@ -129,13 +129,58 @@ def actualizar_correo(id_usuario, nuevo_correo):
         if conn:
             conn.close()
 
-if __name__ == "__main__":
-    print("Inicio de sesión en la base de datos")
-    # Solicitar credenciales al usuario
-    user = input("Ingrese su usuario: ")
-    pwd = getpass.getpass("Ingrese su contraseña: ")#No muestra la contraseña a escribir
-    #Consultar base de datos
-    obtener_datos_usuario(user, pwd)
+def menu_inicial():
+    print("Seleccione una opción:")
+    print("1. Iniciar sesión")
+    print("2. Insertar nuevo usuario")
+    print("3. Actualizar correo de usuario")
+    print("4. Salir")
+    opcion = input("Ingrese el número de la opción deseada: ")
+    return opcion
 
+
+
+if __name__ == "__main__":
+    #print("Inicio de sesión en la base de datos")
+    # Solicitar credenciales al usuario
+    #user = input("Ingrese su usuario: ")
+    #pwd = getpass.getpass("Ingrese su contraseña: ")#No muestra la contraseña a escribir
+    #Consultar base de datos
+    #obtener_datos_usuario(user, pwd)
     #TODO: Implementar insertar usuario mediante una función.
     #TODO: actualizar correo.
+    while True:
+        opcion = menu_inicial()
+        if opcion == '1':
+            # Inicio de sesión, primer opción
+            user = input("Ingrese su usuario: ")
+            pwd = getpass.getpass("Ingrese su contraseña: ")
+            obtener_datos_usuario(user, pwd)
+        elif opcion == '2':
+            #segunda, insertar nuevo usuario.
+            print("\nInsertar nuevo usuario:")
+            nombre = input("Nombre: ")
+            correo = input("Correo: ")
+            telefono = input("Teléfono: ")
+            fecha_nacimiento = input("Fecha de Nacimiento (YYYY-MM-DD): ")
+            usuario = input("Usuario: ")
+            password = getpass.getpass("Contraseña: ")
+            insertar_usaurio(nombre, correo, telefono, fecha_nacimiento, usuario, password)
+        elif opcion == '3':
+            #opción tres, actualizar correo.
+            print("\nActualizar correo de usuario:")
+            try:
+                id_usuario = int(input("Ingrese el ID del usuario: "))
+                nuevo_correo = input("Ingrese el nuevo correo: ")
+                actualizar_correo(id_usuario, nuevo_correo)
+            except ValueError:
+                print("ID inválido. Debe ser un número entero.")
+        elif opcion == '4':
+            #bye bye
+            print("Saliendo del programa.")
+            break
+        else:
+            #TODO: mejorar solo insertar opciones validas.
+            print("Opción no válida. Intente de nuevo.")
+
+
