@@ -220,6 +220,7 @@ if __name__ == "__main__":
                 if confirmacion.lower() == 's':
                     borrar_usuario(id_usuario)
             except ValueError:
+                #TODO: validar que solo ingrese números enteros.
                 print("ID inválido. Debe ser un número entero.")
         elif opcion == '5':
             #bye bye
